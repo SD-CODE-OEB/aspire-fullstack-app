@@ -23,9 +23,10 @@ const corsOptions: CorsOptions = {
       "http://localhost:5173", // Vite dev server
       "http://127.0.0.1:3000",
       "http://127.0.0.1:5173",
-      // Add your production frontend URL here
-      // 'https://your-frontend-domain.com'
-    ];
+      // Add your production frontend URLs here
+      process.env.FRONTEND_URL, // Production frontend URL from env
+      process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined, // Vercel preview URLs
+    ].filter(Boolean) as string[];
 
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
