@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import asyncHandler from "../middlewares/asyncHandler";
 import {
   createReviewForUser,
+  fetchAllReviews,
   getReviewsByUserId,
 } from "../services/reviews.service";
 import { AppError } from "../middlewares/error";
@@ -19,6 +20,15 @@ const getReviewsForUser = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+const getAllReviews = asyncHandler(async (req: Request, res: Response) => {
+  const allReviews = await fetchAllReviews();
+  return res.status(200).json({
+    data: allReviews,
+    success: true,
+    message: "All reviews fetched successfully",
+    timestamp: new Date().toISOString(),
+  });
+});
 const postReview = asyncHandler(async (req: Request, res: Response) => {
   const { userId } = req.user!;
   const { collegeId, rating, comment } = req.body;
@@ -41,4 +51,4 @@ const postReview = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-export { getReviewsForUser, postReview };
+export { getReviewsForUser, postReview, getAllReviews };
